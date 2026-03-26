@@ -3,6 +3,7 @@
 ## Repo Structure
 
 ```
+<<<<<<< Updated upstream
 app.R                        ← Person D — entry point, state, wiring
 R/
   mod_filters.R              ← Person D — sidebar filters
@@ -11,6 +12,16 @@ R/
   mod_barchart.R             ← Person A — crime category bar chart
   mod_neighbourhood.R        ← Person C — hood panel, glyph, heatmap
   mod_compare.R              ← Person C — compare modal, glyph overlay
+=======
+app.R                        ← Person D — entry point, state, wiring, sidebar toggle
+R/
+  mod_filters.R              ← Person D — sidebar filters
+  mod_map.R                  ← Person B — choropleth, click/dblclick events
+  mod_trends.R               ← Person A — line chart (no play)
+  mod_barchart.R             ← Person A — crime category bar chart
+  mod_neighbourhood.R        ← Person C — hood panel, glyph, heatmap, play/pause
+  mod_compare.R              ← Person C — compare modal, glyph overlay/side-by-side
+>>>>>>> Stashed changes
 data/                        ← CSVs (not committed to git)
 www/
   styles.css                 ← shared styles
@@ -20,6 +31,7 @@ www/
 
 ## Reactive State Contract
 
+<<<<<<< Updated upstream
 `app_state` is defined **only in app.R** (Person D).  
 Every field has exactly **one owner** who writes to it.  
 All other modules are **read-only** — they call setters, never write directly.
@@ -35,6 +47,42 @@ All other modules are **read-only** — they call setters, never write directly.
 | `compare_hoods` | string[] | C (compare) | Hoods in compare modal |
 | `active_year` | int\|NULL | A (trends) / C (slider) | Animated year |
 | `is_playing` | bool | A (trends) | Animation running |
+=======
+`app_state` is defined **only in app.R** (Person D).
+Every field has exactly **one owner** who writes to it.
+All other modules are **read-only** — they call setters, never write directly.
+
+| Field | Type | Owner (writer) | Description |
+|---|---|---|---|
+| `crime_type` | string | D (filters) | Active crime type |
+| `selected_year` | int | D (filters) | Single year — drives map, line, bar |
+| `selected_hood` | string\|NULL | B (map) | Single-click highlight — persists after panel closes |
+| `detail_hood` | string\|NULL | B (map) / C (close) | Double-click — opens neighbourhood panel |
+| `hood_panel_open` | bool | B (map) / C (close) | Panel visibility — also triggers sidebar hide/show |
+| `compare_modal_open` | bool | C | Compare modal visibility |
+| `compare_hoods` | string[] | C | Hoods selected in compare modal |
+| `active_year` | int | B (init on dblclick) → C (slider/play) | Glyph year — independent of selected_year once panel opens |
+| `is_playing` | bool | C | Glyph animation running |
+
+---
+
+## Key Behaviours
+
+**Map highlight**
+- Single-click → `selected_hood` set → polygon highlighted, charts filter
+- Double-click → `selected_hood` + `detail_hood` set → panel opens, highlight stays
+- Panel close → `detail_hood` cleared, `selected_hood` stays → highlight persists
+
+**Sidebar / panel**
+- Sidebar visible by default
+- Panel opens → sidebar auto-hides (app.R observer)
+- Panel closes → sidebar auto-restores
+
+**active_year vs selected_year**
+- `selected_year` = global filter for overview (map, line, bar)
+- `active_year` = local to glyph only; initialised from `selected_year` at panel open, then independent
+- Changing sidebar year after panel is open does NOT affect `active_year`
+>>>>>>> Stashed changes
 
 ---
 
@@ -52,11 +100,16 @@ app_state$crime_type <- "assault"
 
 ## Module Signature
 
+<<<<<<< Updated upstream
 Every module server follows the same signature:
+=======
+Every module server follows the same four-argument pattern:
+>>>>>>> Stashed changes
 
 ```r
 mod_xxx_server <- function(id, app_state, setters, app_data) {
   moduleServer(id, function(input, output, session) {
+<<<<<<< Updated upstream
     # read app_state freely
     # write only via setters$set_xxx()
   })
@@ -78,3 +131,10 @@ mod_xxx_server <- function(id, app_state, setters, app_data) {
 | `glyph_data.csv` | mod_neighbourhood, mod_compare |
 | `glyph_scaled.csv` | mod_neighbourhood, mod_compare |
 | `glyph_avg.csv` | mod_neighbourhood, mod_compare |
+=======
+    # READ app_state freely
+    # WRITE only via setters$set_xxx()
+  })
+}
+```
+>>>>>>> Stashed changes
