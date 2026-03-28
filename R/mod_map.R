@@ -16,8 +16,9 @@ mod_map_ui <- function(id) {
 
 mod_map_server <- function(id, app_state, setters, app_data) {
   moduleServer(id, function(input, output, session) {
+    last_click_id <- reactiveVal(NULL)
+    last_click_time <- reactiveVal(as.numeric(NA))
 
-    # ── Join crime data to spatial boundaries ───────────────
     map_filtered <- reactive({
       req(app_data$neighbourhoods_sf)
       req(app_data$crime_rate_all)
@@ -29,7 +30,6 @@ mod_map_server <- function(id, app_state, setters, app_data) {
         ) %>%
         dplyr::select(HOOD_158, crime_count, crime_rate)
 
-      # Left join so neighbourhoods with 0 crimes still appear
       app_data$neighbourhoods_sf %>%
         dplyr::left_join(crime, by = "HOOD_158") %>%
         dplyr::mutate(
@@ -38,7 +38,6 @@ mod_map_server <- function(id, app_state, setters, app_data) {
         )
     })
 
-    # ── Colour palette ──────────────────────────────────────
     pal <- reactive({
       req(map_filtered())
       leaflet::colorNumeric(
@@ -48,19 +47,17 @@ mod_map_server <- function(id, app_state, setters, app_data) {
       )
     })
 
-    # ── Render base map (once) ──────────────────────────────
     output$map <- renderLeaflet({
-      leaflet() %>%
-        # Minimal CartoDB tiles — clean, low visual noise
+      leaflet(
+        options = leafletOptions(doubleClickZoom = FALSE)
+      ) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -79.38, lat = 43.72, zoom = 11)
     })
 
-    # ── Update choropleth when filters change ───────────────
-    # leafletProxy avoids full re-render on every filter change
     observe({
       req(map_filtered(), pal())
-      df  <- map_filtered()
+      df <- map_filtered()
       pal_fn <- pal()
 
       leafletProxy(session$ns("map")) %>%
@@ -80,9 +77,9 @@ mod_map_server <- function(id, app_state, setters, app_data) {
             direction = "auto"
           ),
           highlightOptions = highlightOptions(
-            color       = "white",
-            weight      = 2,
-            fillOpacity = 0.9,
+            color        = "white",
+            weight       = 2,
+            fillOpacity  = 0.9,
             bringToFront = FALSE
           )
         ) %>%
@@ -95,7 +92,6 @@ mod_map_server <- function(id, app_state, setters, app_data) {
         )
     })
 
-    # ── Highlight selected_hood ─────────────────────────────
     observe({
       req(app_data$neighbourhoods_sf)
       hood <- app_state$selected_hood
@@ -116,22 +112,39 @@ mod_map_server <- function(id, app_state, setters, app_data) {
             color       = "#2c7bb6",
             weight      = 3,
             opacity     = 1,
-            fillOpacity = 0
+            fillOpacity = 0,
+            options     = leaflet::pathOptions(interactive = FALSE)
           )
       }
     })
 
-    # ── Single-click → set selected_hood ───────────────────
     observeEvent(input$map_shape_click, {
       hood_id <- input$map_shape_click$id
       req(hood_id)
+
+      current_time <- as.numeric(Sys.time())
+      is_fast_repeat <- identical(last_click_id(), hood_id) &&
+        !is.na(last_click_time()) &&
+        (current_time - last_click_time()) <= 0.4
+
       setters$set_selected_hood(hood_id)
+
+      if (is_fast_repeat) {
+        setters$set_detail_hood(hood_id)
+        setters$set_active_year(app_state$selected_year)
+        setters$set_hood_panel_open(TRUE)
+        last_click_id(NULL)
+        last_click_time(as.numeric(NA))
+      } else {
+        last_click_id(hood_id)
+        last_click_time(current_time)
+      }
     })
 
-    # ── Double-click → open neighbourhood panel ─────────────
     observeEvent(input$map_shape_dblclick, {
       hood_id <- input$map_shape_dblclick$id
       req(hood_id)
+      message(sprintf("[mod_map] map_shape_dblclick fired for hood %s", hood_id))
       setters$set_selected_hood(hood_id)
       setters$set_detail_hood(hood_id)
       setters$set_active_year(app_state$selected_year)
