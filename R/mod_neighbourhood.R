@@ -6,12 +6,11 @@
 # Writes: app_state$hood_panel_open    via set_hood_panel_open()
 #         app_state$detail_hood        via set_detail_hood()
 #         app_state$compare_modal_open via set_compare_modal_open()
-#         app_state$active_year        via set_active_year()
 #         app_state$is_playing         via set_is_playing()
 #
 # Note on active_year:
 #   - Initialised by mod_map on double-click (set to selected_year)
-#   - After that, Person C owns it exclusively via year slider + play button
+#   - Used to render the overview glyph and compare modal
 #   - Changing sidebar selected_year does NOT affect active_year once panel is open
 # ============================================================
 
@@ -47,8 +46,6 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
       req(hood_meta())
       ns <- session$ns
       meta <- hood_meta()
-      initial_year <- isolate(app_state$active_year)
-
       removeModal()
       showModal(modalDialog(
         easyClose = FALSE,
@@ -104,36 +101,6 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
                     div(
                       style = "width:100%; min-width:0; overflow:hidden; margin-top:20px;",
                       plotlyOutput(ns("glyph"), height = "340px", width = "100%")
-                    ),
-                    div(
-                      style = "display:flex; align-items:flex-end; justify-content:center; gap:12px; flex-wrap:wrap; width:100%; min-width:0; margin-top:12px;",
-                      div(
-                        style = "flex:0 1 360px; min-width:0;",
-                        sliderInput(
-                          inputId = ns("active_year"),
-                          label   = "Year",
-                          min     = 2020,
-                          max     = 2025,
-                          value   = initial_year,
-                          step    = 1,
-                          sep     = "",
-                          ticks   = TRUE
-                        )
-                      ),
-                      div(
-                        class = "play-controls",
-                        style = "padding-bottom:12px;",
-                        actionButton(
-                          ns("play"),
-                          icon("play"),
-                          class = "btn-outline-primary btn-sm"
-                        ),
-                        actionButton(
-                          ns("pause"),
-                          icon("pause"),
-                          class = "btn-outline-secondary btn-sm"
-                        )
-                      )
                     )
                   ),
                   tabPanel(
@@ -291,33 +258,6 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
           ),
           margin = list(l = 80, r = 20, t = 20, b = 40)
         )
-    })
-
-    observeEvent(input$active_year, {
-      setters$set_active_year(input$active_year)
-    }, ignoreInit = TRUE)
-
-    observeEvent(input$play, {
-      setters$set_is_playing(TRUE)
-    })
-
-    observeEvent(input$pause, {
-      setters$set_is_playing(FALSE)
-    })
-
-    observe({
-      req(isTRUE(app_state$is_playing))
-      invalidateLater(800, session)
-      isolate({
-        current <- app_state$active_year
-        if (current >= 2025) {
-          setters$set_is_playing(FALSE)
-        } else {
-          new_year <- current + 1
-          setters$set_active_year(new_year)
-          updateSliderInput(session, "active_year", value = new_year)
-        }
-      })
     })
 
     observeEvent(input$open_compare, {
