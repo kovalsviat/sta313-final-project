@@ -38,6 +38,10 @@ heatmap_neigh     <- read_csv("data/heatmap_neigh.csv",     show_col_types = FAL
 glyph_data        <- read_csv("data/glyph_data.csv",        show_col_types = FALSE)
 glyph_scaled      <- read_csv("data/glyph_scaled.csv",      show_col_types = FALSE)
 glyph_avg         <- read_csv("data/glyph_avg.csv",         show_col_types = FALSE)
+neighbourhood_profile_2021 <- read_csv("data/neighbourhood_profile_2021.csv", show_col_types = FALSE)
+glyph_crime_by_year        <- read_csv("data/glyph_crime_by_year.csv",        show_col_types = FALSE)
+glyph_avg                  <- read_csv("data/glyph_avg.csv",                  show_col_types = FALSE)
+correlation_2021           <- read_csv("data/correlation_2021.csv",           show_col_types = FALSE)
 # Load boundaries
 neighbourhoods_sf <- st_read("data/Neighbourhoods.geojson") %>%
   mutate(
@@ -55,7 +59,11 @@ app_data <- list(
   glyph_data      = glyph_data,
   glyph_scaled    = glyph_scaled,
   glyph_avg       = glyph_avg,
-  neighbourhoods_sf = neighbourhoods_sf
+  neighbourhoods_sf = neighbourhoods_sf,
+  neighbourhood_profile  = neighbourhood_profile_2021,   
+  glyph_crime_by_year    = glyph_crime_by_year,          
+  glyph_avg              = glyph_avg,
+  correlation_2021       = correlation_2021
 )
 
 # ── Setters factory ────────────────────────────────────────
