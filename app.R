@@ -37,11 +37,21 @@ bar_data          <- read_csv("data/bar_data.csv", show_col_types = FALSE)
 heatmap_neigh     <- read_csv("data/heatmap_neigh.csv",     show_col_types = FALSE)
 glyph_data        <- read_csv("data/glyph_data.csv",        show_col_types = FALSE)
 glyph_scaled      <- read_csv("data/glyph_scaled.csv",      show_col_types = FALSE)
-glyph_avg         <- read_csv("data/glyph_avg.csv",         show_col_types = FALSE)
 neighbourhood_profile_2021 <- read_csv("data/neighbourhood_profile_2021.csv", show_col_types = FALSE)
 glyph_crime_by_year        <- read_csv("data/glyph_crime_by_year.csv",        show_col_types = FALSE)
-glyph_avg                  <- read_csv("data/glyph_avg.csv",                  show_col_types = FALSE)
 correlation_2021           <- read_csv("data/correlation_2021.csv",           show_col_types = FALSE)
+
+glyph_avg <- glyph_scaled %>%
+  group_by(year) %>%
+  summarise(
+    s_theft        = mean(s_theft, na.rm = TRUE),
+    s_income       = mean(s_income, na.rm = TRUE),
+    s_unemployment = mean(s_unemployment, na.rm = TRUE),
+    s_low_income   = mean(s_low_income, na.rm = TRUE),
+    s_housing      = mean(s_housing, na.rm = TRUE),
+    .groups = "drop"
+  )
+
 # Load boundaries
 neighbourhoods_sf <- st_read("data/Neighbourhoods.geojson") %>%
   mutate(
@@ -62,7 +72,6 @@ app_data <- list(
   neighbourhoods_sf = neighbourhoods_sf,
   neighbourhood_profile  = neighbourhood_profile_2021,   
   glyph_crime_by_year    = glyph_crime_by_year,          
-  glyph_avg              = glyph_avg,
   correlation_2021       = correlation_2021
 )
 

@@ -52,20 +52,68 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
         size = "xl",
         footer = NULL,
         tagList(
+          tags$style(HTML(
+            ".hood-panel .hood-tabs {
+               min-height: 500px;
+               display: flex;
+               flex-direction: column;
+             }
+             .hood-panel .hood-tabs .tab-content {
+               flex: 1 1 auto;
+               min-height: 440px;
+             }
+             .hood-panel .hood-tabs .tab-pane {
+               min-height: 440px;
+             }
+             .hood-panel .hood-tab-pane {
+               min-height: 440px;
+               width: 100%;
+             }
+             .hood-panel .hood-tab-pane--overview {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+             }
+             .hood-panel .hood-tab-pane--crimes {
+               display: flex;
+               align-items: flex-start;
+               justify-content: center;
+               padding-top: 20px;
+             }"
+          )),
           tags$script(HTML(
-            "$(document)
+            "function resizeHoodModal() {
+               var $dialog = $('.modal-dialog:has(.hood-panel)');
+               $dialog.css({
+                 width: '88vw',
+                 'max-width': '1400px',
+                 margin: '3vh auto'
+               });
+               $dialog.find('.modal-content').css({
+                 height: '86vh'
+               });
+               $dialog.find('.modal-body').css({
+                 height: 'calc(86vh - 30px)',
+                 'overflow-y': 'auto',
+                 display: 'flex'
+               });
+             }
+             $(document)
               .off('shown.bs.modal.hoodpanel shown.bs.tab.hoodpanel')
               .on('shown.bs.modal.hoodpanel shown.bs.tab.hoodpanel', function() {
+                resizeHoodModal();
                 setTimeout(function() {
                   $(window).trigger('resize');
                 }, 100);
               });
              setTimeout(function() {
+               resizeHoodModal();
                $(window).trigger('resize');
              }, 100);"
           )),
           div(
             class = "hood-panel",
+            style = "width:100%; min-height:72vh; display:flex; flex-direction:column;",
             div(
               style = "display:flex; justify-content:space-between; align-items:flex-start; gap:16px;",
               div(
@@ -79,10 +127,10 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
               )
             ),
             div(
-              style = "display:flex; gap:24px; align-items:flex-start; margin-top:16px; width:100%; min-width:0;",
+              style = "display:flex; gap:28px; align-items:center; justify-content:center; margin-top:20px; width:100%; min-width:0; flex-wrap:wrap; flex:1 1 auto; align-content:center;",
               div(
-                style = "flex:0 0 240px; width:240px; padding-top:100px;",
-                leafletOutput(ns("hood_map"), height = "190px", width = "100%"),
+                style = "flex:1 1 340px; width:360px; max-width:420px; min-width:300px; padding-top:32px;",
+                leafletOutput(ns("hood_map"), height = "320px", width = "100%"),
                 actionButton(
                   ns("open_compare"),
                   "Compare",
@@ -91,21 +139,28 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
                 )
               ),
               div(
-                style = "flex:1 1 0; min-width:0;",
-                tabsetPanel(
-                  id = ns("detail_view"),
-                  selected = "Overview",
-                  type = "tabs",
-                  tabPanel(
-                    "Overview",
-                    div(
-                      style = "width:100%; min-width:0; overflow:hidden; margin-top:20px;",
-                      plotlyOutput(ns("glyph"), height = "340px", width = "100%")
+                style = "flex:2 1 620px; min-width:420px; display:flex; align-items:center;",
+                div(
+                  class = "hood-tabs",
+                  style = "width:100%;",
+                  tabsetPanel(
+                    id = ns("detail_view"),
+                    selected = "Overview",
+                    type = "tabs",
+                    tabPanel(
+                      "Overview",
+                      div(
+                        class = "hood-tab-pane hood-tab-pane--overview",
+                        plotlyOutput(ns("glyph"), height = "340px", width = "100%")
+                      )
+                    ),
+                    tabPanel(
+                      "Crimes",
+                      div(
+                        class = "hood-tab-pane hood-tab-pane--crimes",
+                        plotlyOutput(ns("heatmap"), height = "420px", width = "100%")
+                      )
                     )
-                  ),
-                  tabPanel(
-                    "Crimes",
-                    plotlyOutput(ns("heatmap"), height = "420px", width = "100%")
                   )
                 )
               )
@@ -125,18 +180,37 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
       bbox <- sf::st_bbox(hood_sf)
 
       leaflet::leaflet(hood_sf) %>%
-        leaflet::addProviderTiles(leaflet::providers$CartoDB.Positron) %>%
+        leaflet::addMapPane("hood_fill", zIndex = 390) %>%
+        leaflet::addMapPane("hood_labels", zIndex = 410) %>%
+        leaflet::addMapPane("hood_outline", zIndex = 420) %>%
+        leaflet::addProviderTiles(leaflet::providers$CartoDB.PositronNoLabels) %>%
         leaflet::fitBounds(
           lng1 = bbox[["xmin"]],
           lat1 = bbox[["ymin"]],
           lng2 = bbox[["xmax"]],
-          lat2 = bbox[["ymax"]]
+          lat2 = bbox[["ymax"]],
+          options = list(
+            padding = c(8, 8),
+            maxZoom = 14
+          )
         ) %>%
         leaflet::addPolygons(
           fillColor = "#6baed6",
-          fillOpacity = 0.65,
-          color = "#2c7fb8",
-          weight = 2
+          fillOpacity = 0.18,
+          color = NA,
+          weight = 0,
+          options = leaflet::pathOptions(pane = "hood_fill")
+        ) %>%
+        leaflet::addProviderTiles(
+          leaflet::providers$CartoDB.PositronOnlyLabels,
+          options = leaflet::providerTileOptions(pane = "hood_labels")
+        ) %>%
+        leaflet::addPolygons(
+          color = "#08519c",
+          weight = 3,
+          opacity = 1,
+          fillOpacity = 0,
+          options = leaflet::pathOptions(pane = "hood_outline")
         )
     })
 
