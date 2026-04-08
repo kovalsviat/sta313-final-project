@@ -43,12 +43,20 @@ mod_barchart_server <- function(id, app_state, setters, app_data) {
       req(bar_filtered())
       df <- bar_filtered()
 
-      # Highlight the currently selected crime type
-      bar_colors <- ifelse(
-        df$CSI_CATEGORY == app_state$crime_type,
-        "#2c7bb6",   # highlighted — matches map blue
-        "#a8c8e8"    # default — lighter blue
-      )
+      # Dynamic title — shows neighbourhood when one is selected
+      chart_title <- if (!is.null(app_state$selected_hood) && nrow(df) > 0) {
+        nb <- dplyr::first(df$neighbourhood_name[!is.na(df$neighbourhood_name)])
+        paste0("Crime Type Distribution \u2014 ", nb)
+      } else {
+        "Crime Type Distribution \u2014 City-wide"
+      }
+
+      # Per-crime colours; non-selected bars dimmed
+      bar_colors <- sapply(df$CSI_CATEGORY, function(ct) {
+        col <- CRIME_COLOURS[ct] %||% BRAND$light
+        if (ct == app_state$crime_type) unname(col)
+        else adjustcolor(unname(col), alpha.f = 0.6)
+      })
 
       plot_ly(
         data        = df,
@@ -67,13 +75,20 @@ mod_barchart_server <- function(id, app_state, setters, app_data) {
         source      = "bar_chart"
       ) %>%
         layout(
+          title  = list(
+            text  = chart_title,
+            font  = list(size = 12, color = "#555"),
+            x     = 0,
+            xanchor = "left",
+            pad   = list(l = 0)
+          ),
           xaxis = list(
             title      = "Proportion of crimes",
             tickformat = ".0%",
             range      = c(0, max(df$proportion) * 1.1)
           ),
           yaxis  = list(title = ""),
-          margin = list(l = 120, r = 20, t = 10, b = 40),
+          margin = list(l = 120, r = 20, t = 35, b = 40),
           plot_bgcolor  = "rgba(0,0,0,0)",
           paper_bgcolor = "rgba(0,0,0,0)"
         ) %>%

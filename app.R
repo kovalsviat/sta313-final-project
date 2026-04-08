@@ -26,6 +26,7 @@ source("R/mod_trends.R")
 source("R/mod_barchart.R")
 source("R/mod_neighbourhood.R")
 source("R/mod_compare.R")
+source("R/colours.R")
 
 # ── Load data ──────────────────────────────────────────────
 # TODO: uncomment each line as CSVs are placed in /data
@@ -57,7 +58,7 @@ app_data <- list(
   glyph_avg       = glyph_avg,
   neighbourhoods_sf = neighbourhoods_sf
 )
-
+`%||%` <- function(a, b) if (!is.null(a)) a else b
 # ── Setters factory ────────────────────────────────────────
 # Person D owns ALL writes to app_state.
 # Every other module calls these — never writes to app_state directly.
@@ -87,7 +88,13 @@ make_setters <- function(app_state) {
 # ── UI ─────────────────────────────────────────────────────
 ui <- page_sidebar(
   title  = "Toronto Crime Dashboard",
-  theme  = bs_theme(bootswatch = "flatly", version = 5),
+  theme  = bs_theme(
+    version   = 5,
+    primary   = BRAND$primary,
+    secondary = BRAND$light,
+    bg        = BRAND$tint96,
+    fg        = "#1A2A38"
+  ),
   tags$head(tags$link(rel = "stylesheet", href = "styles.css")),
 
   # Sidebar hidden when neighbourhood panel is open

@@ -33,7 +33,7 @@ crime_clean <- crime %>%
     !is.na(HOOD_158),
     HOOD_158 != "",
     HOOD_158 != "NSA",
-    OCC_YEAR >= 2020,
+    OCC_YEAR >= 2014,
     OCC_YEAR <= 2025
   )
 

@@ -1,0 +1,269 @@
+/* ============================================================
+   www/styles.css  —  SINGLE SOURCE OF TRUTH FOR ALL COLOURS
+   Brand base: #134E7C
+   ============================================================ */
+
+:root {
+  /* Brand */
+  --color-darkest:  #0B2E4A;
+  --color-sidebar:  #0D3859;
+  --color-dark:     #104269;
+  --color-primary:  #134E7C;
+  --color-light:    #427196;
+  --color-lighter:  #7194B0;
+  --color-tint65:   #ACC1D1;
+  --color-tint82:   #D4DFE7;
+  --color-tint91:   #E9EFF3;
+  --color-tint96:   #F5F7F9;
+
+  /* Crime types — also in R/colours.R */
+  --crime-auto-theft:       #003d5c;
+  --crime-assault:          #594e90;
+  --crime-break-and-enter:  #bc4c96;
+  --crime-robbery:          #ff5f66;
+  --crime-theft-over:       #ffa600;
+}
+
+/* ── Font ────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+* { font-family: 'Inter', sans-serif; }
+
+/* ── Page ────────────────────────────────────────────────── */
+body,
+.bslib-page-sidebar {
+  background-color: var(--color-tint96) !important;
+}
+
+/* ── Navbar ───────────────────────────────────────────────── */
+.navbar, nav.navbar {
+  background-color: var(--color-darkest) !important;
+  border-bottom: 3px solid var(--color-primary);
+}
+.navbar-brand, .navbar .navbar-brand {
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ── Sidebar shell ───────────────────────────────────────── */
+.bslib-sidebar-layout > .sidebar,
+.bslib-sidebar-layout .sidebar,
+.sidebar,
+#main_sidebar {
+  background-color: var(--color-sidebar) !important;
+  border-right: none !important;
+}
+/* catch the inner scroll wrapper bslib uses */
+.bslib-sidebar-layout > .sidebar > .sidebar-content,
+.bslib-sidebar-layout > .sidebar > div {
+  background-color: var(--color-sidebar) !important;
+}
+
+/* ── Filter sections ─────────────────────────────────────── */
+.filter-section {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.filter-section:last-child {
+  border-bottom: none;
+  padding-top: 10px;
+}
+
+.filter-section-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-tint65) !important;
+}
+.filter-section-icon {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ── Selected label ──────────────────────────────────────── */
+.filter-selected-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+.filter-selected-key {
+  color: var(--color-lighter);
+  font-weight: 600;
+}
+.selected-val {
+  color: var(--color-tint65);
+  font-size: 0.8rem;
+}
+.selected-val--active {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* ── Crime type buttons ───────────────────────────────────── */
+.crime-btn-group {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   5px;
+}
+
+.crime-type-btn {
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  gap:           6px;
+  width:         100%;
+  padding:       7px 8px;
+  /* Inactive — barely-there tint */
+  background:    rgba(255,255,255,0.05);
+  border:        1.5px solid rgba(255,255,255,0.12);
+  border-radius: 50px;
+  color:         var(--color-tint65);
+  font-size:     0.78rem;
+  font-weight:   400;
+  cursor:        pointer;
+  transition:    background 0.18s, border-color 0.18s, color 0.18s;
+  text-align:    center;
+  white-space:   nowrap;
+  overflow:      hidden;
+}
+.crime-type-btn:hover {
+  background:   rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.28);
+  color:        var(--color-tint91);
+}
+
+/* Active — JS sets background/border-color as rgba via hexToRgba() */
+.crime-type-btn.is-active {
+  border-radius: 50px;
+  font-weight:   600;
+}
+.crime-type-btn.is-active .crime-dot {
+  background:   rgba(255,255,255,0.85) !important;
+  border-color: rgba(255,255,255,0.4)  !important;
+}
+
+/* Dot */
+.crime-dot {
+  width:         7px;
+  height:        7px;
+  border-radius: 50%;
+  flex-shrink:   0;
+  background:    var(--btn-color);
+  border:        1.5px solid rgba(255,255,255,0.2);
+  transition:    background 0.18s;
+}
+
+.crime-btn-icon  { font-size: 0.88rem; line-height: 1; }
+.crime-btn-label { flex: 1; text-align: left; }
+
+/* ── Slider ───────────────────────────────────────────────── */
+/* Remove default label — we have the section header */
+.filter-section .irs { margin-top: 4px; }
+
+.irs--shiny .irs-bar,
+.irs--shiny .irs-bar--single {
+  background:    var(--color-primary);
+  border-top:    1px solid var(--color-dark);
+  border-bottom: 1px solid var(--color-dark);
+}
+.irs--shiny .irs-handle {
+  background:    var(--color-primary);
+  border:        2px solid var(--color-darkest);
+  box-shadow:    0 1px 4px rgba(0,0,0,0.4);
+}
+.irs--shiny .irs-from,
+.irs--shiny .irs-to,
+.irs--shiny .irs-single {
+  background: var(--color-primary);
+  font-size:  0.75rem;
+}
+.irs--shiny .irs-min,
+.irs--shiny .irs-max {
+  color:     var(--color-tint65);
+  font-size: 0.72rem;
+}
+.irs--shiny .irs-line {
+  background: rgba(255,255,255,0.15);
+}
+
+/* ── Neighbourhood listbox ────────────────────────────────── */
+.filter-section select[size],
+#main_sidebar select[size] {
+  background-color: rgba(0,0,0,0.25) !important;
+  color:            var(--color-tint91) !important;
+  border:           1px solid rgba(255,255,255,0.15) !important;
+  border-radius:    7px;
+  font-size:        0.81rem;
+  width:            100%;
+  outline:          none;
+  scrollbar-color:  var(--color-light) transparent;
+}
+.filter-section select[size] option,
+#main_sidebar select[size] option {
+  background: var(--color-dark);
+  color:      var(--color-tint91);
+  padding:    4px 8px;
+}
+.filter-section select[size] option:checked,
+#main_sidebar select[size] option:checked {
+  background: var(--color-primary) !important;
+  color:      #ffffff !important;
+}
+.filter-section select[size]:focus,
+#main_sidebar select[size]:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow:   0 0 0 2px rgba(19,78,124,0.4) !important;
+}
+
+/* ── Reset button ─────────────────────────────────────────── */
+.btn-reset {
+  background:    transparent !important;
+  border:        1.5px solid rgba(255,255,255,0.2) !important;
+  color:         var(--color-tint65) !important;
+  border-radius: 8px !important;
+  font-size:     0.8rem !important;
+  font-weight:   500 !important;
+  padding:       8px !important;
+  transition:    all 0.18s !important;
+  width:         100%;
+}
+.btn-reset:hover {
+  background:   var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color:        #ffffff !important;
+}
+
+/* ── Cards ────────────────────────────────────────────────── */
+.card {
+  background-color: #ffffff;
+  border:        1px solid var(--color-tint82) !important;
+  border-radius: 10px !important;
+  box-shadow:    0 2px 10px rgba(11,46,74,0.09) !important;
+}
+.card-header {
+  background-color: var(--color-primary) !important;
+  color:            #ffffff !important;
+  font-weight:      600;
+  font-size:        0.85rem;
+  letter-spacing:   0.04em;
+  text-transform:   uppercase;
+  border-bottom:    2px solid var(--color-dark) !important;
+  border-radius:    9px 9px 0 0 !important;
+  padding:          0.55rem 1rem;
+}
+.bslib-full-screen-enter { color: var(--color-tint65) !important; }
+
+/* ── Layout & misc ────────────────────────────────────────── */
+.bslib-grid { gap: 1rem !important; }
+.js-plotly-plot .plotly .bg { fill: transparent !important; }
+
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-lighter); }
