@@ -267,3 +267,214 @@ body,
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-lighter); }
+
+/* ============================================================
+   Neighbourhood modal
+   ============================================================ */
+
+/* ── Shell ─────────────────────────────────────────────────── */
+.hood-panel { padding: 4px 2px; }
+
+.hood-header {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     flex-start;
+  margin-bottom:   16px;
+}
+.hood-title {
+  margin: 0 0 2px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a2a38;
+}
+.hood-code { font-size: 0.78rem; color: #888; }
+
+.hood-close-btn {
+  background:  transparent !important;
+  border:      1px solid #d0d7de !important;
+  color:       #555 !important;
+  border-radius: 6px !important;
+  padding:     2px 9px !important;
+  font-size:   1rem !important;
+  line-height: 1.4 !important;
+}
+.hood-close-btn:hover {
+  background: #f0f0f0 !important;
+}
+
+.hood-body {
+  display: flex;
+  gap:     24px;
+  align-items: flex-start;
+}
+
+/* ── Left column ─────────────────────────────────────────── */
+.hood-left {
+  flex:  0 0 240px;
+  width: 240px;
+}
+
+.btn-compare {
+  width:         100% !important;
+  margin-top:    10px !important;
+  background:    transparent !important;
+  border:        1.5px solid #c0cdd8 !important;
+  color:         #427196 !important;
+  border-radius: 6px !important;
+  font-size:     0.82rem !important;
+  font-weight:   500 !important;
+  padding:       6px 10px !important;
+  transition:    all 0.15s !important;
+}
+.btn-compare:hover {
+  background:   #134E7C !important;
+  border-color: #134E7C !important;
+  color:        #fff !important;
+}
+
+/* ── Crime comparison bars ─────────────────────────────── */
+.crime-bars-heading {
+  font-size:     0.68rem;
+  font-weight:   700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color:         #888;
+  margin-bottom: 8px;
+}
+
+.crime-bar-item {
+  margin-bottom: 10px;
+}
+
+.crime-bar-label {
+  display:     flex;
+  align-items: center;
+  gap:         5px;
+  font-size:   0.75rem;
+  color:       #444;
+  margin-bottom: 3px;
+}
+.bar-dot {
+  width:  7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.crime-bar-track {
+  position:      relative;
+  height:        7px;
+  background:    #edf0f3;
+  border-radius: 4px;
+  overflow:      visible;
+}
+.bar-avg-line {
+  position:   absolute;
+  left:       50%;
+  top:        -3px;
+  width:      2px;
+  height:     13px;
+  background: #aaa;
+  z-index:    2;
+  border-radius: 1px;
+}
+.bar-fill {
+  position:      absolute;
+  left:          0;
+  top:           0;
+  height:        100%;
+  border-radius: 4px;
+  transition:    width 0.3s ease;
+  z-index:       1;
+}
+
+.bar-ratio {
+  font-size:  0.7rem;
+  color:      #888;
+  margin-top: 2px;
+  text-align: right;
+}
+.bar-ratio.above { color: #c0392b; font-weight: 600; }
+.bar-ratio.below { color: #27ae60; font-weight: 600; }
+
+/* ── Related pills ─────────────────────────────────────── */
+.related-row {
+  display:     flex;
+  flex-wrap:   wrap;
+  align-items: center;
+  gap:         5px;
+  margin-top:  5px;
+}
+.related-label {
+  font-size:  0.68rem;
+  color:      #999;
+  font-style: italic;
+}
+.factor-pill {
+  background:    transparent;
+  border:        1px solid #c0cdd8;
+  border-radius: 50px;
+  color:         #427196;
+  font-size:     0.7rem;
+  font-weight:   500;
+  padding:       2px 9px;
+  cursor:        pointer;
+  transition:    all 0.15s;
+}
+.factor-pill:hover,
+.factor-pill.pill-open {
+  background:   #134E7C;
+  border-color: #134E7C;
+  color:        #fff;
+}
+.factor-explanation {
+  font-size:    0.73rem;
+  color:        #555;
+  line-height:  1.5;
+  background:   #f4f7fb;
+  border-left:  3px solid #134E7C;
+  border-radius: 0 4px 4px 0;
+  padding:      7px 10px;
+  margin-top:   5px;
+  width:        100%;
+}
+
+/* ── Right column ──────────────────────────────────────── */
+.hood-right {
+  flex:     1 1 0;
+  min-width: 0;
+}
+
+/* ── Socioeconomic bars (left column) ─────────────────────── */
+.socio-bars-heading {
+  font-size:      0.68rem;
+  font-weight:    700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color:          #888;
+  margin-bottom:  8px;
+}
+.socio-bar-item   { margin-bottom: 12px; }
+.socio-bar-label  { font-size: 0.76rem; color: #444; margin-bottom: 3px; font-weight: 500; }
+
+.bar-ratio           { font-size: 0.7rem; color: #999; margin-top: 2px; }
+.bar-ratio.concerning{ color: #c0392b; font-weight: 600; }
+
+/* Pills — crime-type colour via --pill-color set inline from R */
+.factor-pill {
+  background:    transparent;
+  border:        1.5px solid var(--pill-color, #c0cdd8);
+  border-radius: 50px;
+  color:         var(--pill-color, #427196);
+  font-size:     0.7rem;
+  font-weight:   600;
+  padding:       2px 9px;
+  cursor:        pointer;
+  transition:    all 0.15s;
+}
+.factor-pill:hover,
+.factor-pill.pill-open {
+  background: var(--pill-color, #134E7C);
+  color:      #fff;
+}

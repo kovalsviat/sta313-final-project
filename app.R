@@ -20,26 +20,25 @@ library(stringr)
 
 
 # ── Source modules ─────────────────────────────────────────
+source("R/colours.R")
 source("R/mod_filters.R")
 source("R/mod_map.R")
 source("R/mod_trends.R")
 source("R/mod_barchart.R")
 source("R/mod_neighbourhood.R")
 source("R/mod_compare.R")
-source("R/colours.R")
 
 # ── Load data ──────────────────────────────────────────────
-# TODO: uncomment each line as CSVs are placed in /data
-line_city_year    <- read_csv("data/line_city_year.csv",    show_col_types = FALSE)
-line_neigh_year   <- read_csv("data/line_neigh_year.csv",   show_col_types = FALSE)
-map_data          <- read_csv("data/map_data.csv",          show_col_types = FALSE)
-crime_rate_all    <- read_csv("data/crime_rate_all.csv",    show_col_types = FALSE)
-bar_data          <- read_csv("data/bar_data.csv", show_col_types = FALSE)
-heatmap_neigh     <- read_csv("data/heatmap_neigh.csv",     show_col_types = FALSE)
-glyph_data        <- read_csv("data/glyph_data.csv",        show_col_types = FALSE)
-glyph_scaled      <- read_csv("data/glyph_scaled.csv",      show_col_types = FALSE)
-glyph_avg         <- read_csv("data/glyph_avg.csv",         show_col_types = FALSE)
-# Load boundaries
+line_city_year        <- read_csv("data/line_city_year.csv",             show_col_types = FALSE)
+line_neigh_year       <- read_csv("data/line_neigh_year.csv",            show_col_types = FALSE)
+map_data              <- read_csv("data/map_data.csv",                   show_col_types = FALSE)
+crime_rate_all        <- read_csv("data/crime_rate_all.csv",             show_col_types = FALSE)
+bar_data              <- read_csv("data/bar_data.csv",                   show_col_types = FALSE)
+heatmap_neigh         <- read_csv("data/heatmap_neigh.csv",              show_col_types = FALSE)
+glyph_crime_by_year   <- read_csv("data/glyph_crime_by_year.csv",        show_col_types = FALSE)
+glyph_avg             <- read_csv("data/glyph_avg.csv",                  show_col_types = FALSE)
+neighbourhood_profile <- read_csv("data/neighbourhood_profile_2021.csv", show_col_types = FALSE)
+correlation_2021      <- read_csv("data/correlation_2021.csv",           show_col_types = FALSE)
 neighbourhoods_sf <- st_read("data/Neighbourhoods.geojson") %>%
   mutate(
     HOOD_158 = str_pad(as.character(AREA_SHORT_CODE), width = 3, side = "left", pad = "0"),
@@ -47,16 +46,17 @@ neighbourhoods_sf <- st_read("data/Neighbourhoods.geojson") %>%
   )
 
 app_data <- list(
-  line_city_year  = line_city_year,
-  line_neigh_year = line_neigh_year,
-  map_data        = map_data,
-  crime_rate_all  = crime_rate_all,
-  bar_data        = bar_data,
-  heatmap_neigh   = heatmap_neigh,
-  glyph_data      = glyph_data,
-  glyph_scaled    = glyph_scaled,
-  glyph_avg       = glyph_avg,
-  neighbourhoods_sf = neighbourhoods_sf
+  line_city_year        = line_city_year,
+  line_neigh_year       = line_neigh_year,
+  map_data              = map_data,
+  crime_rate_all        = crime_rate_all,
+  bar_data              = bar_data,
+  heatmap_neigh         = heatmap_neigh,
+  glyph_crime_by_year   = glyph_crime_by_year,
+  glyph_avg             = glyph_avg,
+  neighbourhood_profile = neighbourhood_profile,
+  correlation_2021      = correlation_2021,
+  neighbourhoods_sf     = neighbourhoods_sf
 )
 `%||%` <- function(a, b) if (!is.null(a)) a else b
 # ── Setters factory ────────────────────────────────────────

@@ -100,7 +100,8 @@ profile_wide <- profile_long %>%
     unemployment = `Unemployment rate`,
     low_income   = `Prevalence of low income based on the Low-income measure, after tax (LIM-AT) (%)`,
     housing_cost = `  Spending 30% or more of income on shelter costs`
-  )
+  ) %>%
+  mutate(housing_cost = round(housing_cost / population * 100, 2))
 
 # ============================================================
 # TREND DATA
@@ -170,48 +171,72 @@ heatmap_neigh <- crime_clean %>%
 # ============================================================
 # GLYPH DATA
 # ============================================================
-# Star glyph shows auto theft rate + socioeconomic variables per neighbourhood.
-# Socioeconomic vars are from 2021 census (static across years).
-# Auto theft rate changes per year.
-# All variables normalized 0–1 for glyph rendering.
 
-auto_theft_year <- crime_clean %>%
-  filter(CSI_CATEGORY == "Auto Theft") %>%
-  group_by(HOOD_158, OCC_YEAR) %>%
-  summarise(theft_count = n(), .groups = "drop") %>%
-  left_join(meta_clean, by = "HOOD_158") %>%
+neighbourhood_profile_2021 <- profile_wide %>%
+  left_join(
+    meta_clean %>% select(HOOD_158, TSNS.DESIGNATION),
+    by = "HOOD_158"
+  ) %>%
+  select(HOOD_158, neighbourhood_name, TSNS.DESIGNATION,
+         population, income, unemployment, low_income, housing_cost)
+
+glyph_crime_by_year <- crime_clean %>%
+  group_by(HOOD_158, OCC_YEAR, CSI_CATEGORY) %>%
+  summarise(crime_count = n(), .groups = "drop") %>%
+  left_join(meta_clean %>% select(HOOD_158, neighbourhood_name), by = "HOOD_158") %>%
+  left_join(profile_wide %>% select(HOOD_158, population), by = "HOOD_158") %>%
+  mutate(crime_rate = crime_count / population * 10000) %>%
+  group_by(OCC_YEAR, CSI_CATEGORY) %>%
+  mutate(
+    city_avg_rate = mean(crime_rate, na.rm = TRUE),
+    s_crime_rate  = (crime_rate - min(crime_rate, na.rm = TRUE)) /
+                    (max(crime_rate, na.rm = TRUE) - min(crime_rate, na.rm = TRUE))
+  ) %>%
+  ungroup() %>%
   rename(year = OCC_YEAR)
 
-glyph_data <- auto_theft_year %>%
-  left_join(profile_wide, by = c("HOOD_158", "neighbourhood_name")) %>%
-  mutate(auto_theft_rate = theft_count / population * 10000)
-
-# Min-max normalize all glyph variables to 0–1
-glyph_scaled <- glyph_data %>%
-  mutate(
-    s_theft        = (auto_theft_rate - min(auto_theft_rate, na.rm = TRUE)) /
-                     (max(auto_theft_rate, na.rm = TRUE) - min(auto_theft_rate, na.rm = TRUE)),
-    s_income       = (income - min(income, na.rm = TRUE)) /
-                     (max(income, na.rm = TRUE) - min(income, na.rm = TRUE)),
-    s_unemployment = (unemployment - min(unemployment, na.rm = TRUE)) /
-                     (max(unemployment, na.rm = TRUE) - min(unemployment, na.rm = TRUE)),
-    s_low_income   = (low_income - min(low_income, na.rm = TRUE)) /
-                     (max(low_income, na.rm = TRUE) - min(low_income, na.rm = TRUE)),
-    s_housing      = (housing_cost - min(housing_cost, na.rm = TRUE)) /
-                     (max(housing_cost, na.rm = TRUE) - min(housing_cost, na.rm = TRUE))
-  )
-
-# City average glyph shape per year (used as pink reference in neighbourhood panel)
-glyph_avg <- glyph_scaled %>%
-  group_by(year) %>%
+glyph_avg <- glyph_crime_by_year %>%
+  group_by(year, CSI_CATEGORY) %>%
   summarise(
-    s_theft        = mean(s_theft,        na.rm = TRUE),
-    s_income       = mean(s_income,       na.rm = TRUE),
-    s_unemployment = mean(s_unemployment, na.rm = TRUE),
-    s_low_income   = mean(s_low_income,   na.rm = TRUE),
-    s_housing      = mean(s_housing,      na.rm = TRUE),
+    city_avg_rate    = mean(crime_rate,   na.rm = TRUE),
+    s_city_avg_rate  = mean(s_crime_rate, na.rm = TRUE),
     .groups = "drop"
   )
+
+library(broom)
+
+crime_2021 <- glyph_crime_by_year %>%
+  filter(year == 2021) %>%
+  left_join(
+    profile_wide %>% select(HOOD_158, income, unemployment, low_income, housing_cost),
+    by = "HOOD_158"
+  )
+
+crime_types <- unique(crime_2021$CSI_CATEGORY)
+soc_vars    <- c("income", "unemployment", "low_income", "housing_cost")
+
+correlation_2021 <- expand_grid(
+  crime_type = crime_types,
+  soc_var    = soc_vars
+) %>%
+  pmap_dfr(function(crime_type, soc_var) {
+    subset <- crime_2021 %>%
+      filter(CSI_CATEGORY == crime_type) %>%
+      filter(!is.na(crime_rate), !is.na(.data[[soc_var]]))
+
+    if (nrow(subset) < 10) return(NULL)
+
+    cor.test(subset$crime_rate, subset[[soc_var]], method = "spearman") %>%
+      tidy() %>%
+      mutate(crime_type = crime_type, soc_var = soc_var)
+  }) %>%
+  select(crime_type, soc_var, spearman_r = estimate, p_value = p.value) %>%
+  mutate(
+    significant = p_value < 0.05,
+    strong      = abs(spearman_r) > 0.4,
+    show_in_ui  = significant & strong
+  ) %>%
+  arrange(crime_type, desc(abs(spearman_r)))
 
 # ============================================================
 # EXPORT
@@ -224,8 +249,8 @@ write.csv(map_data,        "map_data.csv",        row.names = FALSE)
 write.csv(crime_rate_all,  "crime_rate_all.csv",  row.names = FALSE)
 write.csv(bar_data,        "bar_data.csv",        row.names = FALSE)
 write.csv(heatmap_neigh,   "heatmap_neigh.csv",   row.names = FALSE)
-write.csv(glyph_data,      "glyph_data.csv",      row.names = FALSE)
-write.csv(glyph_scaled,    "glyph_scaled.csv",    row.names = FALSE)
-write.csv(glyph_avg,       "glyph_avg.csv",       row.names = FALSE)
-
+write.csv(neighbourhood_profile_2021, "neighbourhood_profile_2021.csv", row.names = FALSE)
+write.csv(glyph_crime_by_year,        "glyph_crime_by_year.csv",        row.names = FALSE)
+write.csv(glyph_avg, "glyph_avg.csv", row.names = FALSE)
+write.csv(correlation_2021,  "correlation_2021.csv",  row.names = FALSE)
 message("✓ All data files written to /data")
