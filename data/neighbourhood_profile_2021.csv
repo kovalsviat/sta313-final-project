@@ -1,0 +1,159 @@
+"HOOD_158","neighbourhood_name","TSNS.DESIGNATION","population","income","unemployment","low_income","housing_cost"
+"001","West Humber-Clairville","Not an NIA or Emerging Neighbourhood",33300,92000,14.3,8.7,8.33
+"002","Mount Olive-Silverstone-Jamestown","Neighbourhood Improvement Area",31345,76500,17.7,15.6,9.59
+"003","Thistletown-Beaumond Heights","Neighbourhood Improvement Area",9850,86000,16.6,11.8,8.68
+"004","Rexdale-Kipling","Not an NIA or Emerging Neighbourhood",10375,77000,13.9,13.5,9.98
+"005","Elms-Old Rexdale","Neighbourhood Improvement Area",9355,82000,18.5,12.4,8.93
+"006","Kingsview Village-The Westway","Neighbourhood Improvement Area",22005,79000,18.1,14.7,10.45
+"007","Willowridge-Martingrove-Richview","Not an NIA or Emerging Neighbourhood",22445,92000,14.3,9.5,10.51
+"008","Humber Heights-Westmount","Emerging Neighbourhood",10005,85000,12.9,10.2,11.29
+"009","Edenbridge-Humber Valley","Not an NIA or Emerging Neighbourhood",15190,1e+05,12.1,8.2,11.59
+"010","Princess-Rosethorn","Not an NIA or Emerging Neighbourhood",11170,162000,11.4,5.6,5.64
+"011","Eringate-Centennial-West Deane","Not an NIA or Emerging Neighbourhood",18450,108000,12.8,5.6,8.05
+"012","Markland Wood","Not an NIA or Emerging Neighbourhood",10365,105000,12.2,6,9.6
+"013","Etobicoke West Mall","Not an NIA or Emerging Neighbourhood",11865,84000,14.2,11,13.11
+"015","Kingsway South","Not an NIA or Emerging Neighbourhood",8855,184000,8.3,4.3,8.64
+"016","Stonegate-Queensway","Not an NIA or Emerging Neighbourhood",25650,104000,12,8.5,10.45
+"018","New Toronto","Not an NIA or Emerging Neighbourhood",11345,68500,13.2,15.8,14.06
+"019","Long Branch","Not an NIA or Emerging Neighbourhood",11360,83000,11.5,11.2,14.57
+"020","Alderwood","Not an NIA or Emerging Neighbourhood",12595,106000,11.9,6.2,8.02
+"021","Humber Summit","Neighbourhood Improvement Area",12185,80000,17.4,12.2,8.7
+"022","Humbermede","Neighbourhood Improvement Area",16955,77500,16.2,13.3,9.47
+"023","Pelmo Park-Humberlea","Not an NIA or Emerging Neighbourhood",11290,1e+05,13.8,7.7,8.81
+"024","Black Creek","Neighbourhood Improvement Area",21145,65000,19.5,19.4,9.43
+"025","Glenfield-Jane Heights","Neighbourhood Improvement Area",30020,70500,19.1,14.9,8.38
+"027","York University Heights","Neighbourhood Improvement Area",28255,76000,16.4,13.8,11.66
+"028","Rustic","Neighbourhood Improvement Area",9390,64000,18.6,19.1,7.72
+"029","Maple Leaf","Not an NIA or Emerging Neighbourhood",9845,82000,14.8,9,9.29
+"030","Brookhaven-Amesbury","Not an NIA or Emerging Neighbourhood",17495,73000,17.2,13.8,10.15
+"031","Yorkdale-Glen Park","Emerging Neighbourhood",16625,79000,16,12.2,12.36
+"032","Englemount-Lawrence","Emerging Neighbourhood",21285,78000,12.6,13.4,11.13
+"033","Clanton Park","Not an NIA or Emerging Neighbourhood",17620,88000,12.1,10.6,13.45
+"034","Bathurst Manor","Not an NIA or Emerging Neighbourhood",15955,92000,12.6,11.4,10.72
+"035","Westminster-Branson","Emerging Neighbourhood",25705,76000,15.5,13.7,13.91
+"036","Newtonbrook West","Not an NIA or Emerging Neighbourhood",23805,79000,13.7,15.3,15.23
+"037","Willowdale West","Not an NIA or Emerging Neighbourhood",17160,76500,12,19.2,18.65
+"038","Lansing-Westgate","Not an NIA or Emerging Neighbourhood",15910,98000,11.5,11.8,14.46
+"039","Bedford Park-Nortown","Not an NIA or Emerging Neighbourhood",22145,135000,10.4,7.2,9.48
+"040","St.Andrew-Windfields","Not an NIA or Emerging Neighbourhood",16960,118000,10.8,13,12.44
+"041","Bridle Path-Sunnybrook-York Mills","Not an NIA or Emerging Neighbourhood",8940,222000,8.2,9.1,10.4
+"042","Banbury-Don Mills","Not an NIA or Emerging Neighbourhood",27155,91000,10.5,11.1,15.52
+"043","Victoria Village","Neighbourhood Improvement Area",17365,68000,16.8,17.6,13.13
+"044","Flemingdon Park","Neighbourhood Improvement Area",22530,70000,16.5,19.9,11.87
+"046","Pleasant View","Not an NIA or Emerging Neighbourhood",15220,89000,16.9,10.1,9.53
+"047","Don Valley Village","Not an NIA or Emerging Neighbourhood",26775,83000,15.1,13.5,13.3
+"048","Hillcrest Village","Not an NIA or Emerging Neighbourhood",16345,86000,13.6,15.6,9.88
+"049","Bayview Woods-Steeles","Not an NIA or Emerging Neighbourhood",12085,93000,13.4,11.9,14.81
+"050","Newtonbrook East","Not an NIA or Emerging Neighbourhood",15345,80000,13.1,17.7,17.01
+"052","Bayview Village","Not an NIA or Emerging Neighbourhood",22330,83000,13.7,16.4,20.56
+"053","Henry Farm","Not an NIA or Emerging Neighbourhood",19840,79500,13.7,17.2,18.15
+"054","O`Connor Parkview","Not an NIA or Emerging Neighbourhood",18405,77000,17,13.6,12.22
+"055","Thorncliffe Park","Neighbourhood Improvement Area",20400,67000,17.9,24.2,12.6
+"056","Leaside-Bennington","Not an NIA or Emerging Neighbourhood",16535,148000,11.2,5.8,8.98
+"057","Broadview North","Not an NIA or Emerging Neighbourhood",10955,68500,14.7,14.6,17.02
+"058","Old East York","Not an NIA or Emerging Neighbourhood",9160,96000,12.2,8.3,9.33
+"059","Danforth-East York","Not an NIA or Emerging Neighbourhood",17065,101000,11.1,9.3,9.46
+"060","Woodbine-Lumsden","Not an NIA or Emerging Neighbourhood",7915,96000,12,10,10.23
+"061","Taylor Massey","Neighbourhood Improvement Area",15025,68500,18.8,17.8,14.08
+"062","East End Danforth","Not an NIA or Emerging Neighbourhood",21840,90000,12.9,11.9,11.08
+"063","The Beaches","Not an NIA or Emerging Neighbourhood",21510,116000,11,7.9,12.58
+"064","Woodbine Corridor","Not an NIA or Emerging Neighbourhood",12205,97000,10.8,11.1,10.12
+"065","Greenwood-Coxwell","Not an NIA or Emerging Neighbourhood",14120,93000,12,12,11.47
+"066","Danforth","Not an NIA or Emerging Neighbourhood",9305,98000,12,10.3,8.81
+"067","Playter Estates-Danforth","Not an NIA or Emerging Neighbourhood",7680,87000,14,10.7,13.54
+"068","North Riverdale","Not an NIA or Emerging Neighbourhood",11290,108000,9.1,8.3,12.13
+"069","Blake-Jones","Not an NIA or Emerging Neighbourhood",7475,86000,13.4,15.2,9.57
+"070","South Riverdale","Not an NIA or Emerging Neighbourhood",27815,1e+05,13,11.7,11.88
+"071","Cabbagetown-South St. James Town","Not an NIA or Emerging Neighbourhood",11020,76500,12.9,15,18.01
+"072","Regent Park","Neighbourhood Improvement Area",12750,65500,17.3,22.9,15.69
+"073","Moss Park","Not an NIA or Emerging Neighbourhood",21490,65000,14.6,23.3,21.85
+"074","North St. James Town","Not an NIA or Emerging Neighbourhood",18535,59200,17.5,21.9,18.07
+"078","Kensington-Chinatown","Not an NIA or Emerging Neighbourhood",18120,62000,17.7,23,21.66
+"079","University","Not an NIA or Emerging Neighbourhood",6435,80000,15.3,14.6,17.79
+"080","Palmerston-Little Italy","Not an NIA or Emerging Neighbourhood",13120,88000,11.2,10.9,16.81
+"081","Trinity-Bellwoods","Not an NIA or Emerging Neighbourhood",15415,92000,12.7,11,14.79
+"083","Dufferin Grove","Not an NIA or Emerging Neighbourhood",11215,78000,14.4,11.7,16.76
+"084","Little Portugal","Not an NIA or Emerging Neighbourhood",15485,86000,12.7,10.8,18.92
+"085","South Parkdale","Neighbourhood Improvement Area",20495,57200,17.3,20.2,22.22
+"086","Roncesvalles","Not an NIA or Emerging Neighbourhood",14610,88000,11.3,12.5,13.89
+"087","High Park-Swansea","Not an NIA or Emerging Neighbourhood",22665,101000,11.2,8.5,13.1
+"088","High Park North","Not an NIA or Emerging Neighbourhood",21855,83000,13.1,11.9,17.62
+"089","Runnymede-Bloor West Village","Not an NIA or Emerging Neighbourhood",10120,138000,9.8,5.1,7.36
+"090","Junction Area","Not an NIA or Emerging Neighbourhood",14010,96000,12.8,8.8,11.49
+"091","Weston-Pelham Park","Neighbourhood Improvement Area",10680,81000,15.2,13.1,9.18
+"092","Corso Italia-Davenport","Not an NIA or Emerging Neighbourhood",13200,94000,11.3,8.8,9.73
+"094","Wychwood","Not an NIA or Emerging Neighbourhood",12800,86000,12.5,11.2,13.05
+"095","Annex","Not an NIA or Emerging Neighbourhood",29300,85000,11.6,14.4,21.62
+"096","Casa Loma","Not an NIA or Emerging Neighbourhood",11350,103000,11,10.7,19.3
+"097","Yonge-St. Clair","Not an NIA or Emerging Neighbourhood",12905,94000,8.5,9.8,20.53
+"098","Rosedale-Moore Park","Not an NIA or Emerging Neighbourhood",20080,122000,9.4,8.8,16.46
+"099","Mount Pleasant East","Not an NIA or Emerging Neighbourhood",16370,110000,10.6,8.3,11.48
+"100","Yonge-Eglinton","Not an NIA or Emerging Neighbourhood",12410,94000,11.5,10.5,16.68
+"101","Forest Hill South","Not an NIA or Emerging Neighbourhood",10860,109000,8.9,9.8,15.84
+"102","Forest Hill North","Not an NIA or Emerging Neighbourhood",12290,90000,11.6,10.8,13.47
+"103","Lawrence Park South","Not an NIA or Emerging Neighbourhood",14960,162000,9.8,7.2,9.39
+"105","Lawrence Park North","Not an NIA or Emerging Neighbourhood",14675,168000,10.9,5.6,7.77
+"106","Humewood-Cedarvale","Not an NIA or Emerging Neighbourhood",13845,83000,10.8,11.2,14.84
+"107","Oakwood Village","Not an NIA or Emerging Neighbourhood",20710,77000,12.6,12,12.19
+"108","Briar Hill-Belgravia","Not an NIA or Emerging Neighbourhood",14575,81000,13.9,11.5,11.6
+"109","Caledonia-Fairbank","Not an NIA or Emerging Neighbourhood",10015,87000,12.9,10.6,9.69
+"110","Keelesdale-Eglinton West","Neighbourhood Improvement Area",11390,77000,14.9,12.5,10.67
+"111","Rockcliffe-Smythe","Neighbourhood Improvement Area",22235,69000,14.2,15.8,11.11
+"112","Beechborough-Greenbrook","Neighbourhood Improvement Area",6260,62400,17.6,18,11.42
+"113","Weston","Neighbourhood Improvement Area",18675,64500,17.4,18.6,15.56
+"114","Lambton Baby Point","Not an NIA or Emerging Neighbourhood",7965,103000,13.2,12,8.16
+"115","Mount Dennis","Neighbourhood Improvement Area",13055,70500,18.7,14.9,12.22
+"116","Steeles","Emerging Neighbourhood",22765,80000,18.6,14.8,11.97
+"118","Tam O'Shanter-Sullivan","Not an NIA or Emerging Neighbourhood",27205,76500,15.6,14.4,11.91
+"119","Wexford/Maryvale","Not an NIA or Emerging Neighbourhood",28345,82000,16.1,11.6,10.94
+"120","Clairlea-Birchmount","Not an NIA or Emerging Neighbourhood",26840,90000,14.9,11.5,9.71
+"121","Oakridge","Neighbourhood Improvement Area",13705,60000,21.1,22.5,10.76
+"122","Birchcliffe-Cliffside","Not an NIA or Emerging Neighbourhood",22700,90000,14.9,9.7,11.34
+"123","Cliffcrest","Not an NIA or Emerging Neighbourhood",16130,92000,15.3,11.1,9.18
+"124","Kennedy Park","Neighbourhood Improvement Area",17110,69000,18.4,17,10.11
+"125","Ionview","Neighbourhood Improvement Area",13365,74500,16.4,13.8,9.54
+"126","Dorset Park","Emerging Neighbourhood",24305,79000,14.5,13,11.03
+"128","Agincourt South-Malvern West","Not an NIA or Emerging Neighbourhood",24170,79500,14.4,13,12.45
+"129","Agincourt North","Not an NIA or Emerging Neighbourhood",27540,84000,17.3,12.4,9.5
+"130","Milliken","Not an NIA or Emerging Neighbourhood",23980,81000,19,14.6,10.01
+"133","Centennial Scarborough","Not an NIA or Emerging Neighbourhood",13380,134000,11.6,4.4,5.16
+"134","Highland Creek","Not an NIA or Emerging Neighbourhood",12625,120000,15,6.4,6.06
+"135","Morningside","Neighbourhood Improvement Area",17660,85000,15.7,12.4,8.98
+"136","West Hill","Neighbourhood Improvement Area",28140,76000,16.9,15.2,9.56
+"138","Eglinton East","Neighbourhood Improvement Area",22535,73500,17.1,13.9,11.05
+"139","Scarborough Village","Neighbourhood Improvement Area",16520,71500,17.8,17.1,10.74
+"140","Guildwood","Not an NIA or Emerging Neighbourhood",9680,102000,13.5,5.8,9.76
+"141","Golfdale-Cedarbrae-Woburn","Neighbourhood Improvement Area (formerly Woburn)",27085,77000,16.7,16,8.53
+"142","Woburn North","Neighbourhood Improvement Area (formerly Woburn)",26580,74500,16,15.5,11.21
+"143","West Rouge","Not an NIA or Emerging Neighbourhood",20670,108000,14.5,6.2,7.01
+"144","Morningside Heights","Not an NIA or Emerging Neighbourhood",24940,117000,15,5.7,6.88
+"145","Malvern West","Emerging Neighbourhood",17320,88000,17.5,9.7,8.72
+"146","Malvern East","Emerging Neighbourhood",26095,85000,16.2,11.7,9.7
+"147","L'Amoreaux West","Emerging Neighbourhood",21545,72500,15.8,15.8,11.91
+"148","East L'Amoreaux","Emerging Neighbourhood",21495,85000,17.9,13.5,10.82
+"149","Parkwoods-O'Connor Hills","Not an NIA or Emerging Neighbourhood",13965,98000,16.3,10.7,11.06
+"150","Fenside-Parkwoods","Not an NIA or Emerging Neighbourhood",20510,78000,15.7,13.2,13.02
+"151","Yonge-Doris","Not an NIA or Emerging Neighbourhood",20160,73000,12.8,22.5,22.54
+"152","East Willowdale","Not an NIA or Emerging Neighbourhood",15485,95000,13.5,16.9,15.05
+"153","Avondale","Not an NIA or Emerging Neighbourhood",13790,84000,11.4,18.6,21.83
+"154","Oakdale-Beverley Heights","Neighbourhood Improvement Area (formerly Downsview-Roding-CFB)",21420,71500,16.9,14.4,9.92
+"155","Downsview","Neighbourhood Improvement Area (formerly Downsview-Roding-CFB)",17970,82000,14.5,9.6,11.63
+"156","Bendale-Glen Andrew","Not an NIA or Emerging Neighbourhood",18685,74500,15,17,12.98
+"157","Bendale South","Not an NIA or Emerging Neighbourhood",10725,90000,15.4,9.7,8.44
+"158","Islington","Not an NIA or Emerging Neighbourhood",23460,102000,13,8.5,10.04
+"159","Etobicoke City Centre","Not an NIA or Emerging Neighbourhood",23600,83000,11.1,13.6,17.99
+"160","Mimico-Queensway","Not an NIA or Emerging Neighbourhood",17045,84000,11.6,12.4,13.26
+"161","Humber Bay Shores","Not an NIA or Emerging Neighbourhood",22605,85000,12.4,13.5,24.82
+"162","West Queen West","Not an NIA or Emerging Neighbourhood",13170,101000,7.5,10.9,18.68
+"163","Fort York-Liberty Village","Not an NIA or Emerging Neighbourhood",19915,94000,8.6,10.3,24.78
+"164","Wellington Place","Not an NIA or Emerging Neighbourhood",25570,90000,7.8,14,28.88
+"165","Harbourfront-CityPlace","Not an NIA or Emerging Neighbourhood",28135,90000,10.3,14.4,23.94
+"166","St Lawrence-East Bayfront-The Islands","Not an NIA or Emerging Neighbourhood",31285,87000,10.8,15.3,21.64
+"167","Church-Wellesley","Not an NIA or Emerging Neighbourhood",22320,60400,15.6,23.3,32.17
+"168","Downtown Yonge East","Not an NIA or Emerging Neighbourhood",17700,69500,13.6,22.4,27.49
+"169","Bay-Cloverhill","Not an NIA or Emerging Neighbourhood",16670,58400,15,29,35.51
+"170","Yonge-Bay Corridor","Not an NIA or Emerging Neighbourhood",12645,68500,13.3,24.3,29.62
+"171","Junction-Wallace Emerson","Not an NIA or Emerging Neighbourhood",23180,84000,14,11.2,13.83
+"172","Dovercourt Village","Not an NIA or Emerging Neighbourhood",12380,87000,13.8,10,13.61
+"173","North Toronto","Not an NIA or Emerging Neighbourhood",15885,70000,13,18.5,26.57
+"174","South Eglinton-Davisville","Not an NIA or Emerging Neighbourhood",22735,80000,10.6,15.3,23.84
