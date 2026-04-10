@@ -78,6 +78,7 @@ make_setters <- function(app_state) {
 
     # Compare selections
     set_compare_hoods      = function(v) { app_state$compare_hoods      <- v },
+    set_compare_pick_mode  = function(v) { app_state$compare_pick_mode  <- v },
 
     # Glyph animation (Person C owns, neighbourhood panel only)
     set_active_year        = function(v) { app_state$active_year        <- v },
@@ -150,6 +151,7 @@ server <- function(input, output, session) {
 
     # Compare
     compare_hoods      = c(),
+    compare_pick_mode  = FALSE,   # TRUE while user picks hood from map
 
     # Glyph animation (neighbourhood panel only — owned by Person C)
     # Initialised to selected_year when panel opens; independent after that

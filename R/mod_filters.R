@@ -29,17 +29,31 @@ mod_filters_ui <- function(id) {
             list(val = "Theft Over",      icon = "\U0001F4E6")
           ),
           function(item) {
-            # --btn-color is set from R so JS never needs to look it up
             btn_col <- unname(CRIME_COLOURS[item$val])
+            # Pill style matching neighbourhood modal correlation pills:
+            # transparent bg + coloured border + coloured text when inactive
+            # solid bg + white text when active (set by JS)
             tags$button(
               id           = ns(paste0("ct_", gsub(" ", "_", item$val))),
               type         = "button",
               class        = "crime-type-btn",
               `data-value` = item$val,
-              style        = paste0("--btn-color:", btn_col, ";"),
-              tags$span(class = "crime-dot"),
-              tags$span(class = "crime-btn-icon", item$icon),
-              tags$span(class = "crime-btn-label", item$val)
+              style        = paste0(
+                "--btn-color:", btn_col, ";",
+                # inactive: outlined pill
+                "background:transparent;",
+                "border:1.5px solid ", btn_col, ";",
+                "border-radius:50px;",
+                "color:", btn_col, ";",
+                "font-size:10px; font-weight:600;",
+                "padding:3px 10px; cursor:pointer;",
+                "transition:background .15s, color .15s;",
+                "white-space:nowrap; opacity:0.85;"
+              ),
+              tags$span(class = "crime-btn-icon",
+                        style = "font-size:12px; margin-right:4px;",
+                        item$icon),
+              tags$span(item$val)
             )
           }
         )
@@ -49,28 +63,23 @@ mod_filters_ui <- function(id) {
         (function() {
           var pfx = '%s';
 
-          function hexToRgba(hex, alpha) {
-            hex = hex.replace('#', '');
-            var r = parseInt(hex.slice(0,2), 16);
-            var g = parseInt(hex.slice(2,4), 16);
-            var b = parseInt(hex.slice(4,6), 16);
-            return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-          }
-
           function highlightBtn(val) {
             var btns = document.querySelectorAll('[id^=\"' + pfx + 'ct_\"]');
             btns.forEach(function(b) {
               var isActive = b.getAttribute('data-value') === val;
-              b.classList.toggle('is-active', isActive);
+              var col = getComputedStyle(b).getPropertyValue('--btn-color').trim();
               if (isActive) {
-                var col = getComputedStyle(b).getPropertyValue('--btn-color').trim();
-                b.style.background  = hexToRgba(col, 0.28);
+                b.style.background  = col;
                 b.style.borderColor = col;
-                b.style.color       = '#ffffff';
+                b.style.color       = '#fff';
+                b.style.opacity     = '1';
+                b.style.boxShadow   = '0 0 0 2.5px ' + col + '55';
               } else {
-                b.style.background  = '';
-                b.style.borderColor = '';
-                b.style.color       = '';
+                b.style.background  = 'transparent';
+                b.style.borderColor = col;
+                b.style.color       = col;
+                b.style.opacity     = '0.75';
+                b.style.boxShadow   = 'none';
               }
             });
           }
@@ -183,6 +192,11 @@ mod_filters_server <- function(id, app_state, setters, app_data) {
     observeEvent(app_state$selected_hood, {
       updateSelectInput(session, "selected_hood",
                         selected = app_state$selected_hood %||% "")
+    }, ignoreInit = TRUE)
+
+    # ── Sync slider when year changes externally (e.g. trend chart click) ──
+    observeEvent(app_state$selected_year, {
+      updateSliderInput(session, "selected_year", value = app_state$selected_year)
     }, ignoreInit = TRUE)
 
     observeEvent(app_state$crime_type, {

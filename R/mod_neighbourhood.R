@@ -295,7 +295,7 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
           div(style="font-size:10.5px; color:#888; margin-top:2px;",
               paste0("city avg: ", d$fmt(d$city_val))),
 
-          if (notable && nrow(pills_df) > 0) {
+          if (nrow(pills_df) > 0) {
             n_total <- nrow(pills_df)
             div(style="margin-top:7px;",
               # Header row: [<details>]

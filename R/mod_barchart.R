@@ -71,16 +71,17 @@ mod_barchart_server <- function(id, app_state, setters, app_data) {
           "Proportion: %{x:.1%}<br>",
           "Count: %{text}<extra></extra>"
         ),
-        text        = ~crime_count,
+        text         = ~crime_count,
+        textposition = "none",
         source      = "bar_chart"
       ) %>%
         layout(
           title  = list(
-            text  = chart_title,
-            font  = list(size = 12, color = "#555"),
-            x     = 0,
+            text    = chart_title,
+            font    = list(size = 12, color = "#555"),
+            x       = 0,
             xanchor = "left",
-            pad   = list(l = 0)
+            pad     = list(l = 0)
           ),
           xaxis = list(
             title      = "Proportion of crimes",

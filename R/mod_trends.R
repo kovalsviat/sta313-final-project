@@ -36,7 +36,6 @@ mod_trends_server <- function(id, app_state, setters, app_data) {
     output$line_chart <- renderPlotly({
       df           <- trends_filtered()
       req(nrow(df) > 0)
-      message("DEBUG trends: nrow=", nrow(df), " sel_year=", app_state$selected_year)
       sel_year     <- app_state$selected_year
       is_hood_view <- !is.null(app_state$selected_hood)
 
