@@ -1,11 +1,5 @@
 # ============================================================
 # R/colours.R  —  R MIRROR OF www/styles.css :root VARIABLES
-#
-# Keep this file in sync with styles.css.
-# Do NOT hard-code colours anywhere else in the R codebase.
-# JS in mod_filters reads CSS vars directly via getComputedStyle.
-#
-# Used by: app.R (bs_theme), mod_trends.R, mod_barchart.R
 # ============================================================
 
 # ── Brand palette ───────────────────────────────────────────

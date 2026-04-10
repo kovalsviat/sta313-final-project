@@ -1,10 +1,5 @@
 # ============================================================
 # R/mod_barchart.R
-# Owner: Person A
-# Reads:  app_state$crime_type, app_state$selected_year,
-#         app_state$selected_hood
-# Writes: app_state$crime_type via set_crime_type()
-#           (clicking a bar updates the active crime type)
 # ============================================================
 
 mod_barchart_ui <- function(id) {

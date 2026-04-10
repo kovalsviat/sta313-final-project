@@ -1,12 +1,5 @@
 # ============================================================
 # app.R
-# Owner: Person D (integration lead)
-# Responsibility:
-#   - Load all data
-#   - Define shared app_state (reactiveValues)
-#   - Define all setters via make_setters()
-#   - Wire all modules together
-#   - Hide/show sidebar based on hood_panel_open
 # ============================================================
 
 library(shiny)
@@ -60,7 +53,6 @@ app_data <- list(
 )
 `%||%` <- function(a, b) if (!is.null(a)) a else b
 # ── Setters factory ────────────────────────────────────────
-# Person D owns ALL writes to app_state.
 # Every other module calls these — never writes to app_state directly.
 make_setters <- function(app_state) {
   list(
@@ -80,7 +72,7 @@ make_setters <- function(app_state) {
     set_compare_hoods      = function(v) { app_state$compare_hoods      <- v },
     set_compare_pick_mode  = function(v) { app_state$compare_pick_mode  <- v },
 
-    # Glyph animation (Person C owns, neighbourhood panel only)
+    # Glyph animation
     set_active_year        = function(v) { app_state$active_year        <- v },
     set_is_playing         = function(v) { app_state$is_playing         <- v }
   )
@@ -153,7 +145,7 @@ server <- function(input, output, session) {
     compare_hoods      = c(),
     compare_pick_mode  = FALSE,   # TRUE while user picks hood from map
 
-    # Glyph animation (neighbourhood panel only — owned by Person C)
+    # Glyph animation (neighbourhood panel only)
     # Initialised to selected_year when panel opens; independent after that
     active_year        = 2025,
     is_playing         = FALSE

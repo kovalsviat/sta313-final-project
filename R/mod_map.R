@@ -1,12 +1,5 @@
 # ============================================================
 # R/mod_map.R
-# Owner: Person B
-# Reads:  app_state$crime_type, app_state$selected_year,
-#         app_state$selected_hood
-# Writes: app_state$selected_hood    via set_selected_hood()
-#         app_state$detail_hood      via set_detail_hood()
-#         app_state$hood_panel_open  via set_hood_panel_open()
-#         app_state$active_year      via set_active_year()
 # ============================================================
 
 mod_map_ui <- function(id) {

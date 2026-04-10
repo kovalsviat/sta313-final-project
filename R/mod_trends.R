@@ -1,9 +1,5 @@
 # ============================================================
 # R/mod_trends.R
-# Owner: Person A
-# Reads:  app_state$crime_type, app_state$selected_year,
-#         app_state$selected_hood
-# Writes: app_state$selected_year via set_selected_year()
 # ============================================================
 
 mod_trends_ui <- function(id) {
