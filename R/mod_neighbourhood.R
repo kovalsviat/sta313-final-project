@@ -5,7 +5,7 @@
 NOTABLE_HI <- 1.30
 NOTABLE_LO <- 0.70
 
-# Plain-English sentence shown when a correlation pill is clicked
+
 make_expl_sentence <- function(crime_type, soc_var, spearman_r, is_strong) {
   labels <- c(income       = "median income",
               unemployment = "unemployment rate",

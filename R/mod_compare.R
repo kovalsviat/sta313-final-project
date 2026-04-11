@@ -310,7 +310,7 @@ mod_compare_server <- function(id, app_state, setters, app_data) {
     observeEvent(plotly::event_data("plotly_click"), {
       click <- plotly::event_data("plotly_click")
       req(!is.null(click))
-      # curveNumber 0 = city avg, 1+ = neighbourhood (1-indexed in customdata)
+
       hood_idx <- tryCatch(as.integer(click$customdata[[1]]), error=function(e) NULL)
       req(!is.null(hood_idx), hood_idx >= 1)
       session$sendCustomMessage("highlightSocioBars",
