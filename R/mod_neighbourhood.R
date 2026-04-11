@@ -101,13 +101,13 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
                      line-height:1.4; cursor:pointer;")
           ),
 
-          div(style="display:flex; align-items:stretch; min-height:560px;",
+          div(style="display:flex; align-items:stretch; min-height:640px;",
 
             # LEFT
             div(style="flex:0 0 300px; width:300px; padding:14px 18px;
                         border-right:1px solid #e8eaed; display:flex;
                         flex-direction:column; gap:8px;
-                        overflow-y:auto; max-height:560px; box-sizing:border-box;",
+                        overflow-y:auto; max-height:640px; box-sizing:border-box;",
 
               div(style="width:100%; height:175px; flex-shrink:0;
                           border-radius:8px; overflow:hidden; border:1px solid #e0e4e8;",
@@ -138,7 +138,7 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
                     div(style="font-size:10px; font-weight:700; text-transform:uppercase;
                                 letter-spacing:.08em; color:#999; margin-bottom:6px;",
                         "Crime rate profile"),
-                    plotlyOutput(ns("crime_glyph"), height="360px", width="100%"),
+                    plotlyOutput(ns("crime_glyph"), height="430px", width="100%"),
                     div(style="padding:8px 40px 0; display:flex; align-items:center; gap:10px;",
                       span(style="font-size:10px; color:#999; white-space:nowrap;", "Year:"),
                       sliderInput(ns("glyph_year"), label=NULL,
@@ -428,7 +428,7 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
         showlegend=TRUE,
         legend=list(orientation="h", x=0.5, xanchor="center", y=-0.08,
                     font=list(size=11)),
-        margin=list(l=60,r=60,t=10,b=10),
+        margin=list(l=70,r=70,t=20,b=10),
         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)"
       )
     })
