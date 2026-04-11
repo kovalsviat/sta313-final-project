@@ -11,7 +11,6 @@ library(readr)
 library(sf)
 library(stringr)
 
-
 # ── Source modules ─────────────────────────────────────────
 source("R/colours.R")
 source("R/mod_filters.R")
@@ -51,28 +50,19 @@ app_data <- list(
   correlation_2021      = correlation_2021,
   neighbourhoods_sf     = neighbourhoods_sf
 )
+
 `%||%` <- function(a, b) if (!is.null(a)) a else b
+
 # ── Setters factory ────────────────────────────────────────
-# Every other module calls these — never writes to app_state directly.
 make_setters <- function(app_state) {
   list(
-    # Filters
     set_crime_type         = function(v) { app_state$crime_type         <- v },
     set_selected_year      = function(v) { app_state$selected_year      <- v },
-
-    # Map interaction
     set_selected_hood      = function(v) { app_state$selected_hood      <- v },
     set_detail_hood        = function(v) { app_state$detail_hood        <- v },
-
-    # Panel / modal visibility
     set_hood_panel_open    = function(v) { app_state$hood_panel_open    <- v },
     set_compare_modal_open = function(v) { app_state$compare_modal_open <- v },
-
-    # Compare selections
     set_compare_hoods      = function(v) { app_state$compare_hoods      <- v },
-    set_compare_pick_mode  = function(v) { app_state$compare_pick_mode  <- v },
-
-    # Glyph animation
     set_active_year        = function(v) { app_state$active_year        <- v },
     set_is_playing         = function(v) { app_state$is_playing         <- v }
   )
@@ -80,8 +70,8 @@ make_setters <- function(app_state) {
 
 # ── UI ─────────────────────────────────────────────────────
 ui <- page_sidebar(
-  title  = "Toronto Crime Dashboard",
-  theme  = bs_theme(
+  title = "Toronto Crime Dashboard",
+  theme = bs_theme(
     version   = 5,
     primary   = BRAND$primary,
     secondary = BRAND$light,
@@ -90,21 +80,50 @@ ui <- page_sidebar(
   ),
   tags$head(tags$link(rel = "stylesheet", href = "styles.css")),
 
-  # Sidebar hidden when neighbourhood panel is open
   sidebar = sidebar(
     id    = "main_sidebar",
     width = 280,
     mod_filters_ui("filters")
   ),
 
-# ── Top: Map full width ───────────────────────────────────
+  # ── Map ───────────────────────────────────────────────────
   card(
-    card_header("Neighbourhoods Map"),
+    card_header(
+      div(style = "display:flex; align-items:center; gap:8px;",
+        span("Neighbourhoods Map"),
+        div(style = "position:relative; display:inline-block;",
+          tags$span("?",
+            onclick = "toggleMapHint()",
+            style = "display:inline-flex; align-items:center; justify-content:center;
+                     width:15px; height:15px; border-radius:50%;
+                     background:#e8eaed; color:#555; font-size:9px;
+                     font-weight:700; cursor:pointer; line-height:1;"
+          ),
+          tags$div(id = "map_hint",
+            style = "display:none; position:absolute; left:20px; top:0;
+                     width:230px; background:#1a2a38; color:#e9eff3;
+                     font-size:11px; line-height:1.55; border-radius:6px;
+                     padding:9px 11px; z-index:9999;
+                     box-shadow:0 2px 8px rgba(0,0,0,0.3);",
+            tags$b("Single click"), " a neighbourhood to select it and filter the charts below.",
+            tags$br(), tags$br(),
+            tags$b("Double click"), " to open the full neighbourhood dashboard with crime trends and socioeconomic profile."
+          )
+        )
+      )
+    ),
+    tags$script(HTML(
+      "function toggleMapHint() {
+         var el = document.getElementById('map_hint');
+         if (!el) return;
+         el.style.display = el.style.display === 'block' ? 'none' : 'block';
+       }"
+    )),
     mod_map_ui("map"),
     full_screen = TRUE
   ),
 
-  # ── Bottom row: Line chart (wide) + Bar chart (narrow) ───
+  # ── Bottom row ────────────────────────────────────────────
   layout_columns(
     col_widths = c(8, 4),
     card(
@@ -117,44 +136,27 @@ ui <- page_sidebar(
     )
   ),
 
-  # Neighbourhood panel — always mounted, shown via hood_panel_open
   mod_neighbourhood_ui("neighbourhood"),
-
-  # Compare modal — always mounted, shown via compare_modal_open
   mod_compare_ui("compare")
 )
 
 # ── Server ─────────────────────────────────────────────────
 server <- function(input, output, session) {
 
-  # ── Shared state ──────────────────────────────────────────
   app_state <- reactiveValues(
-    # Filters (overview — drives map, line chart, bar chart)
-    crime_type = "Auto Theft",
-    selected_year      = 2025,        # single year, not a range
-
-    # Map interaction
-    selected_hood      = NULL,        # single-click  → highlight + filter charts
-    detail_hood        = NULL,        # double-click  → open neighbourhood panel
-
-    # Panel / modal visibility
+    crime_type         = "Auto Theft",
+    selected_year      = 2025,
+    selected_hood      = NULL,
+    detail_hood        = NULL,
     hood_panel_open    = FALSE,
     compare_modal_open = FALSE,
-
-    # Compare
     compare_hoods      = c(),
-    compare_pick_mode  = FALSE,   # TRUE while user picks hood from map
-
-    # Glyph animation (neighbourhood panel only)
-    # Initialised to selected_year when panel opens; independent after that
     active_year        = 2025,
     is_playing         = FALSE
   )
 
   setters <- make_setters(app_state)
 
-  # ── Sidebar visibility ─────────────────────────────────────
-  # Hide sidebar when neighbourhood panel opens; restore when it closes
   observe({
     if (isTRUE(app_state$hood_panel_open)) {
       bslib::sidebar_toggle("main_sidebar", open = FALSE)
@@ -163,7 +165,6 @@ server <- function(input, output, session) {
     }
   })
 
-  # ── Wire modules ──────────────────────────────────────────
   mod_filters_server("filters",             app_state, setters, app_data)
   mod_map_server("map",                     app_state, setters, app_data)
   mod_trends_server("trends",               app_state, setters, app_data)

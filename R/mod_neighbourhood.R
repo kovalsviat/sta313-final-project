@@ -65,6 +65,49 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
              });
              setTimeout(function(){ $(window).trigger('resize'); }, 220);
 
+             // Hint content keyed by id
+             var HINT_TEXT = {
+               hint_socio: 'Click <em>Might correlate</em> under any factor to see which crime types are statistically linked to it (2021 Cencus). Then click a crime pill to read the explanation and highlight that crime on the chart.',
+               hint_glyph: 'Hover any point to see the score for that crime type. The year slider lets you see how the profile shifted over time.'
+             };
+
+             // Shared tooltip div appended to body so overflow:hidden never clips it
+             var _hintEl = null;
+             var _hintActive = null;
+             function getHintEl() {
+               if (!_hintEl) {
+                 _hintEl = document.createElement('div');
+                 _hintEl.style.cssText = 'position:fixed; width:240px; background:#1a2a38; color:#e9eff3;' +
+                   'font-size:11px; line-height:1.55; border-radius:6px; padding:9px 11px;' +
+                   'z-index:99999; box-shadow:0 2px 10px rgba(0,0,0,0.35); display:none;';
+                 document.body.appendChild(_hintEl);
+                 // Click outside closes it
+                 document.addEventListener('click', function(e) {
+                   if (_hintEl && !_hintEl.contains(e.target) &&
+                       !e.target.getAttribute('onclick')?.includes('showHint')) {
+                     _hintEl.style.display = 'none';
+                     _hintActive = null;
+                   }
+                 });
+               }
+               return _hintEl;
+             }
+             window.showHint = function(btn, id) {
+               var el = getHintEl();
+               if (_hintActive === id) {
+                 el.style.display = 'none'; _hintActive = null; return;
+               }
+               el.innerHTML = HINT_TEXT[id] || '';
+               var r = btn.getBoundingClientRect();
+               el.style.display = 'block';
+               // Position to the right; flip left if it would overflow viewport
+               var left = r.right + 8;
+               if (left + 250 > window.innerWidth) left = r.left - 258;
+               el.style.left = left + 'px';
+               el.style.top  = Math.max(8, r.top - 10) + 'px';
+               _hintActive = id;
+             };
+
              // pill click: toggle select/deselect
              window.pillClick = function(btn, inputId, crime, explId) {
                var wasActive = btn.dataset.active === '1';
@@ -118,9 +161,19 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
                         color:#427196; border-radius:6px; font-size:12px;
                         font-weight:500; padding:6px 10px; cursor:pointer; flex-shrink:0;"),
               tags$hr(style="margin:2px 0; border:none; border-top:1px solid #eee; flex-shrink:0;"),
-              div(style="font-size:10px; font-weight:700; text-transform:uppercase;
-                          letter-spacing:.08em; color:#999; flex-shrink:0;",
-                  "Socioeconomic profile vs city average"),
+              div(style="display:flex; align-items:center; gap:5px; flex-shrink:0;",
+                div(style="font-size:10px; font-weight:700; text-transform:uppercase;
+                            letter-spacing:.08em; color:#999;",
+                    "Socioeconomic profile vs city average"),
+                tags$span("?",
+                  id = "hint_btn_socio",
+                  onclick = "showHint(this, 'hint_socio')",
+                  style = "display:inline-flex; align-items:center; justify-content:center;
+                           width:14px; height:14px; border-radius:50%;
+                           background:#e8eaed; color:#555; font-size:9px;
+                           font-weight:700; cursor:pointer; flex-shrink:0; line-height:1;"
+                )
+              ),
               tags$input(id=ns("crime_pill_click"), type="hidden", value=""),
               uiOutput(ns("socio_bars")),
               div(style="font-size:10px; color:#bbb; font-style:italic;
@@ -135,9 +188,19 @@ mod_neighbourhood_server <- function(id, app_state, setters, app_data) {
                 id=ns("detail_view"), selected="Overview", type="tabs",
                 tabPanel("Overview",
                   div(style="padding:14px 20px 8px;",
-                    div(style="font-size:10px; font-weight:700; text-transform:uppercase;
-                                letter-spacing:.08em; color:#999; margin-bottom:6px;",
-                        "Crime rate profile"),
+                    div(style="display:flex; align-items:center; gap:6px; margin-bottom:6px;",
+                      div(style="font-size:10px; font-weight:700; text-transform:uppercase;
+                                  letter-spacing:.08em; color:#999;",
+                          "Crime rate profile"),
+                      tags$span("?",
+                        id = "hint_btn_glyph",
+                        onclick = "showHint(this, 'hint_glyph')",
+                        style = "display:inline-flex; align-items:center; justify-content:center;
+                                 width:14px; height:14px; border-radius:50%;
+                                 background:#e8eaed; color:#555; font-size:9px;
+                                 font-weight:700; cursor:pointer; flex-shrink:0; line-height:1;"
+                      )
+                    ),
                     plotlyOutput(ns("crime_glyph"), height="430px", width="100%"),
                     div(style="padding:8px 40px 0; display:flex; align-items:center; gap:10px;",
                       span(style="font-size:10px; color:#999; white-space:nowrap;", "Year:"),
